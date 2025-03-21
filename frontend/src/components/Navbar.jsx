@@ -33,7 +33,7 @@ function NavList() {
         className="p-1 md:text-base font-medium"
       >
         <Link
-          to="/discoverEvents"
+          to="/discover-events"
           className="flex items-center hover:text-purple-500 transition-colors"
         >
           Discover Events
@@ -46,7 +46,7 @@ function NavList() {
         className="p-1 md:text-base font-medium"
       >
         <Link
-          to="/communityHelp"
+          to="/community-helps"
           className="flex items-center hover:text-purple-500 transition-colors"
         >
           Community Help

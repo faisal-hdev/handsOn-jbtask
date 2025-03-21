@@ -1,7 +1,8 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 
 const EventsForm = () => {
   const {
@@ -12,33 +13,39 @@ const EventsForm = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Form data----->", data);
-
     //Data send to the server
-    fetch(`http://localhost:5000/event`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.insertedId) {
-          alert("Event added successful");
-        }
+    try {
+      const { eventData } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/event`,
+        data
+      );
+      console.log(eventData);
+      toast.success("Event Posted Successfully ", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
       });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
     reset();
   };
 
   return (
-    <section>
-      <div className="flex flex-col mx-auto lg:flex-row mt-10 md:mt-16 mb-8">
+    <section className="my-10 md:my-20">
+      <div className="flex flex-col mx-auto lg:flex-row mb-8">
         <div className="flex flex-col w-full lg:w-2/3 text-black">
           <h1 className="text-2xl md:text-5xl font-bold leading-none">
-            Submit Volunteer Events
+            Create Volunteer Events
           </h1>
           <p className="my-2 text-lg md:text-xl w-full md:w-[80%]">
             Provide details, set goals, and invite others to join, creating
@@ -87,7 +94,7 @@ const EventsForm = () => {
                 id="email"
                 name="email"
                 type="email"
-                className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
+                className="block text-black w-full px-4 py-2 md:py-3 bg-white border rounded-lg focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
               />
             </div>
             <div className="col-span-full sm:col-span-3">
@@ -140,6 +147,18 @@ const EventsForm = () => {
             </div>
             <div className="col-span-full sm:col-span-3">
               <label className="text-sm mb-3 md:text-lg text-black font-normal">
+                Maximum Participants
+              </label>
+              <input
+                {...register("participants", { required: true })}
+                type="number"
+                id="participants"
+                name="participants"
+                className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
+              />
+            </div>
+            <div className="col-span-full sm:col-span-3">
+              <label className="text-sm mb-3 md:text-lg text-black font-normal">
                 Location
               </label>
               <input
@@ -150,20 +169,22 @@ const EventsForm = () => {
                 className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
               />
             </div>
-            <div className="col-span-full sm:col-span-3">
+            <div className="col-span-full sm:colspan-3">
               <label className="text-sm md:text-lg text-black font-normal">
-                description
+                Description
               </label>
               <textarea
                 {...register("description", { required: true })}
                 id="description"
                 type="text"
                 name="description"
-                className="block text-black  w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
+                className="block text-black md:h-36 w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
               ></textarea>
+            </div>
+            <div className="col-span-full sm:colspan-3">
               <button
                 type="submit"
-                className="px-8 mt-4 md:mt-6 py-2.5 md:py-4 w-full leading-5 text-white transition-colors duration-300 bg-purple-600 rounded-md hover:bg-purple-500 focus:outline-none"
+                className="px-8 mt-4 md:text-lg font-medium md:mt-6 mb-4 md:mb-5 py-2.5 md:py-4 w-full leading-5 text-white transition-colors duration-300 bg-purple-600 rounded-md hover:bg-purple-500 focus:outline-none"
               >
                 Create Event
               </button>
@@ -171,6 +192,7 @@ const EventsForm = () => {
           </div>
         </fieldset>
       </form>
+      <Toaster position="top-center" />
     </section>
   );
 };

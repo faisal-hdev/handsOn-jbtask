@@ -42,7 +42,7 @@ const Hero = () => {
           </div>
           <div className="mt-6 md:mt-12 flex items-center justify-center gap-x-6">
             <Link
-              to="/discoverEvents"
+              to="/discover-events"
               className="transition flex items-center text-white px-4 md:px-8 justify-center gap-2 text-base md:text-lg py-3 rounded-lg font-semibold ease-in-out delay-150 bg-purple-500 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 duration-300"
             >
               Explore Events

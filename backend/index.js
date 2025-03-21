@@ -29,6 +29,32 @@ async function run() {
   try {
     // Database collections are here
     const eventsCollection = client.db("HandsOn").collection("events");
+    const communityHelpsCollection = client
+      .db("HandsOn")
+      .collection("communityHelps");
+
+    // get all event data in db
+    app.get("/events", async (req, res) => {
+      const cursor = eventsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // get all community data in db
+    app.get("/helps", async (req, res) => {
+      const cursor = communityHelpsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // all database data get api are down below
+    // Save single communityHelps data in db
+    app.post("/help", async (req, res) => {
+      const helpData = req.body;
+      console.log(helpData);
+      const result = await communityHelpsCollection.insertOne(helpData);
+      res.send(result);
+    });
 
     // Save single event data in db
     app.post("/event", async (req, res) => {
@@ -38,15 +64,11 @@ async function run() {
       res.send(result);
     });
 
-    // get all event data in db
-    app.get("/events", async (req, res) => {
-      const result = await eventsCollection.find().toArray();
-      res.send(result);
-    });
-
-    // await client.db("admin").command({ ping: 1 });
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. successfully connected to MongoDB!");
   } finally {
+    // Ensures that the client will close when you finish/error
   }
 }
 run().catch(console.dir);

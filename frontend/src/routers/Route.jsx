@@ -7,6 +7,8 @@ import SignUp from "../pages/SignUp";
 import Events from "../pages/Events";
 import Help from "../pages/Help";
 import Team from "../pages/Team";
+import EventsForm from "../components/EventsForm";
+import HelpForm from "../components/HelpForm";
 
 const router = createBrowserRouter([
   {
@@ -17,8 +19,14 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "/signIn", element: <SignIn /> },
       { path: "/signUp", element: <SignUp /> },
-      { path: "/discoverEvents", element: <Events /> },
-      { path: "/communityHelp", element: <Help /> },
+      { path: "/help-request", element: <HelpForm /> },
+      { path: "/create-events", element: <EventsForm /> },
+      {
+        path: "/discover-events",
+        element: <Events />,
+        loader: () => fetch(`http://localhost:5000/events`),
+      },
+      { path: "/community-helps", element: <Help /> },
       { path: "/team", element: <Team /> },
     ],
   },
