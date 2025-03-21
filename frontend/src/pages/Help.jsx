@@ -1,10 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
+import HelpCard from "../components/HelpCard";
 
 const Help = () => {
+  const [helps, setHelps] = useState([]);
+  console.log(helps);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await axios(`${import.meta.env.VITE_API_URL}/helps`);
+      setHelps(data);
+    };
+    getData();
+  }, []);
+
   return (
-    <div className="my-20 lg:my-32">
+    <div className="md:my-20 my-8 lg:my-32">
       <div className="text-black flex max-md:flex-col max-md:text-center justify-between items-center">
         <div className="flex flex-col w-full lg:w-2/3 text-black">
           <h1 className="text-2xl md:text-5xl font-bold leading-none">
@@ -21,7 +34,7 @@ const Help = () => {
           </Link>
         </div>
       </div>
-      <div className="my-16 bg-gray-50 py-10 p-4 rounded-lg">
+      <div className="my-10 md:my-20">
         {/* Sorting events */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-5  my-10">
           <div>
@@ -62,8 +75,12 @@ const Help = () => {
             Reset
           </button>
         </div>
-        {/* Display events */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt10"></div>
+        {/* Display help Card */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-5 md:my-12">
+          {helps.map((helpItem) => (
+            <HelpCard key={helpItem._id} helpItem={helpItem} />
+          ))}
+        </div>
       </div>
     </div>
   );

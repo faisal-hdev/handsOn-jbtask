@@ -9,6 +9,7 @@ import Help from "../pages/Help";
 import Team from "../pages/Team";
 import EventsForm from "../components/EventsForm";
 import HelpForm from "../components/HelpForm";
+import EventDetails from "../pages/EventDetails";
 
 const router = createBrowserRouter([
   {
@@ -17,17 +18,19 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
+      { path: "/team", element: <Team /> },
       { path: "/signIn", element: <SignIn /> },
       { path: "/signUp", element: <SignUp /> },
+      { path: "/community-helps", element: <Help /> },
+      { path: "/discover-events", element: <Events /> },
       { path: "/help-request", element: <HelpForm /> },
       { path: "/create-events", element: <EventsForm /> },
       {
-        path: "/discover-events",
-        element: <Events />,
-        loader: () => fetch(`http://localhost:5000/events`),
+        path: "/event/:id",
+        element: <EventDetails />,
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/event/${params.id}`),
       },
-      { path: "/community-helps", element: <Help /> },
-      { path: "/team", element: <Team /> },
     ],
   },
 ]);

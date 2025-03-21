@@ -3,8 +3,10 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const EventsForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,7 +24,7 @@ const EventsForm = () => {
         data
       );
       console.log(eventData);
-      toast.success("Event Posted Successfully ", {
+      toast.success("Event created successfully ", {
         style: {
           border: "1px solid #713200",
           padding: "16px",
@@ -38,6 +40,7 @@ const EventsForm = () => {
       toast.error(error.message);
     }
     reset();
+    // navigate("/discover-events");
   };
 
   return (
@@ -55,7 +58,7 @@ const EventsForm = () => {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col mx-auto space-y-12 bg-gray-100"
+        className="flex flex-col mx-auto space-y-12 bg-gray-50"
       >
         <fieldset className="grid grid-cols-3 gap-6 p-3 md:p-6 rounded-md shadow-sm">
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
@@ -171,7 +174,7 @@ const EventsForm = () => {
             </div>
             <div className="col-span-full sm:colspan-3">
               <label className="text-sm md:text-lg text-black font-normal">
-                Description
+                Event Description
               </label>
               <textarea
                 {...register("description", { required: true })}
@@ -179,6 +182,18 @@ const EventsForm = () => {
                 type="text"
                 name="description"
                 className="block text-black md:h-36 w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
+              ></textarea>
+            </div>
+            <div className="col-span-full sm:colspan-3">
+              <label className="text-sm md:text-lg text-black font-normal">
+                Special Requirements
+              </label>
+              <textarea
+                {...register("requirements", { required: true })}
+                id="requirements"
+                type="text"
+                name="requirements"
+                className="block text-black md:h-20 w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
               ></textarea>
             </div>
             <div className="col-span-full sm:colspan-3">

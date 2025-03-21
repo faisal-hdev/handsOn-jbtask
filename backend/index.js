@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
@@ -44,6 +44,14 @@ async function run() {
     app.get("/helps", async (req, res) => {
       const cursor = communityHelpsCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    //  Get a single event from db using event id
+    app.get("/event/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await eventsCollection.findOne(query);
       res.send(result);
     });
 

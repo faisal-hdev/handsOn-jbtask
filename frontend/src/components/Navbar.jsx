@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@material-tailwind/react";
 
 import {
   Navbar,
@@ -110,8 +109,8 @@ export function NavbarSimple() {
   }, []);
 
   return (
-    <Navbar className=" text-black px-6 md:px-10 lg:px-28 py-3 md:py-8 border-0 border-b-[2px] border-purple-300">
-      <div className="flex items-center justify-between text-blue-gray-900">
+    <Navbar className=" text-black py-3 md:py-8 border-0 border-b-[2px] border-purple-300">
+      <div className="flex px-5 lg:px-0 w-full lg:max-w-7xl mx-auto items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
           href="/"

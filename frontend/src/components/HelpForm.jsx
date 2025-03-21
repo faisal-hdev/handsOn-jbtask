@@ -3,8 +3,10 @@ import React from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const HelpForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,7 +24,7 @@ const HelpForm = () => {
         data
       );
       console.log(eventData);
-      toast.success("Event Posted Successfully ", {
+      toast.success("Help request created Successfully ", {
         style: {
           border: "1px solid #713200",
           padding: "16px",
@@ -38,6 +40,7 @@ const HelpForm = () => {
       toast.error(error.message);
     }
     reset();
+    // navigate("/community-helps");
   };
   return (
     <section>
@@ -53,7 +56,7 @@ const HelpForm = () => {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col mx-auto space-y-12 bg-gray-100"
+          className="flex flex-col mx-auto space-y-12 bg-gray-50"
         >
           <fieldset className="grid grid-cols-3 gap-6 p-3 md:p-6 rounded-md shadow-sm">
             <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
