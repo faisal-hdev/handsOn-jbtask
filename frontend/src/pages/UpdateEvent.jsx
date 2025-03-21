@@ -3,28 +3,42 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
-const EventsForm = () => {
+const UpdateEvent = () => {
   const navigate = useNavigate();
+  const event = useLoaderData();
+  const {
+    _id,
+    category,
+    title,
+    email,
+    description,
+    startTime,
+    endTime,
+    date,
+    location,
+    participants,
+    requirements,
+  } = event || {};
+  console.log(event);
+
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors },
   } = useForm();
 
   const onSubmit = async (data) => {
     console.log("Form data----->", data);
-    //Data send to the server
     try {
-      const { eventData } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/event`,
+      const { eventData } = await axios.put(
+        `${import.meta.env.VITE_API_URL}/event/${_id}`,
         data
       );
       console.log(eventData);
-      toast.success("Event created successfully ", {
+      toast.success("Updated successfully ", {
         style: {
           border: "1px solid #713200",
           padding: "16px",
@@ -39,16 +53,14 @@ const EventsForm = () => {
       console.log(error);
       toast.error(error.message);
     }
-    reset();
     navigate("/discover-events");
   };
-
   return (
     <section className="my-10 md:my-20">
       <div className="flex flex-col mx-auto lg:flex-row mb-8">
         <div className="flex flex-col w-full lg:w-2/3 text-black">
           <h1 className="text-2xl md:text-5xl font-bold leading-none">
-            Create Volunteer Events
+            Update Volunteer Events
           </h1>
           <p className="my-2 text-lg md:text-xl w-full md:w-[80%]">
             Provide details, set goals, and invite others to join, creating
@@ -67,7 +79,8 @@ const EventsForm = () => {
                 Category
               </label>
               <select
-                {...register("category", { required: true })}
+                {...register("category")}
+                defaultValue={category}
                 name="category"
                 id="category"
                 className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
@@ -93,7 +106,8 @@ const EventsForm = () => {
                 Email
               </label>
               <input
-                {...register("email", { required: true })}
+                {...register("email")}
+                defaultValue={email}
                 id="email"
                 name="email"
                 type="email"
@@ -105,7 +119,8 @@ const EventsForm = () => {
                 Title
               </label>
               <input
-                {...register("title", { required: true })}
+                {...register("title")}
+                defaultValue={title}
                 id="title"
                 type="text"
                 name="title"
@@ -117,7 +132,8 @@ const EventsForm = () => {
                 Date
               </label>
               <input
-                {...register("date", { required: true })}
+                {...register("date")}
+                defaultValue={date}
                 id="date"
                 name="date"
                 type="date"
@@ -129,7 +145,8 @@ const EventsForm = () => {
                 Start Time
               </label>
               <input
-                {...register("startTime", { required: true })}
+                {...register("startTime")}
+                defaultValue={startTime}
                 type="time"
                 id="startTime"
                 name="startTime"
@@ -141,7 +158,8 @@ const EventsForm = () => {
                 End Time
               </label>
               <input
-                {...register("endTime", { required: true })}
+                {...register("endTime")}
+                defaultValue={endTime}
                 type="time"
                 id="endTime"
                 name="endTime"
@@ -153,7 +171,8 @@ const EventsForm = () => {
                 Maximum Participants
               </label>
               <input
-                {...register("participants", { required: true })}
+                {...register("participants")}
+                defaultValue={participants}
                 type="number"
                 id="participants"
                 name="participants"
@@ -165,7 +184,8 @@ const EventsForm = () => {
                 Location
               </label>
               <input
-                {...register("location", { required: true })}
+                {...register("location")}
+                defaultValue={location}
                 type="text"
                 id="location"
                 name="location"
@@ -177,7 +197,8 @@ const EventsForm = () => {
                 Event Description
               </label>
               <textarea
-                {...register("description", { required: true })}
+                {...register("description")}
+                defaultValue={description}
                 id="description"
                 type="text"
                 name="description"
@@ -189,7 +210,8 @@ const EventsForm = () => {
                 Special Requirements
               </label>
               <textarea
-                {...register("requirements", { required: true })}
+                {...register("requirements")}
+                defaultValue={requirements}
                 id="requirements"
                 type="text"
                 name="requirements"
@@ -201,7 +223,7 @@ const EventsForm = () => {
                 type="submit"
                 className="px-8 mt-4 md:text-lg font-medium md:mt-6 mb-4 md:mb-5 py-2.5 md:py-4 w-full leading-5 text-white transition-colors duration-300 bg-purple-600 rounded-md hover:bg-purple-500 focus:outline-none"
               >
-                Create Event
+                Update Event
               </button>
             </div>
           </div>
@@ -212,4 +234,4 @@ const EventsForm = () => {
   );
 };
 
-export default EventsForm;
+export default UpdateEvent;

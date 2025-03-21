@@ -55,6 +55,32 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/event/:id", async (req, res) => {
+      const id = req.params.id;
+      const eventData = req.body;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          ...eventData,
+        },
+      };
+      const result = await eventsCollection.updateOne(
+        query,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    // Delete a single event in event from bd
+    app.delete("/event/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await eventsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // all database data get api are down below
     // Save single communityHelps data in db
     app.post("/help", async (req, res) => {

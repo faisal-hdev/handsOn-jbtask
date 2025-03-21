@@ -10,6 +10,7 @@ import Team from "../pages/Team";
 import EventsForm from "../components/EventsForm";
 import HelpForm from "../components/HelpForm";
 import EventDetails from "../pages/EventDetails";
+import UpdateEvent from "../pages/UpdateEvent";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,12 @@ const router = createBrowserRouter([
       {
         path: "/event/:id",
         element: <EventDetails />,
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/event/${params.id}`),
+      },
+      {
+        path: "/update/:id",
+        element: <UpdateEvent />,
         loader: ({ params }) =>
           fetch(`${import.meta.env.VITE_API_URL}/event/${params.id}`),
       },

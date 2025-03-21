@@ -40,7 +40,7 @@ const HelpForm = () => {
       toast.error(error.message);
     }
     reset();
-    // navigate("/community-helps");
+    navigate("/community-helps");
   };
   return (
     <section>
