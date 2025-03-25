@@ -10,7 +10,7 @@ const Help = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios(`${import.meta.env.VITE_API_URL}/helps`);
+      const { data } = await axios(`${import.meta.env.VITE_API_BASEURL}/helps`);
       setHelps(data);
     };
     getData();
@@ -27,9 +27,9 @@ const Help = () => {
         <div className="flex items-center justify-center gap-x-6">
           <Link
             to="/help-request"
-            className="transition flex items-center text-white px-4 md:px-8 justify-center gap-2 text-base md:text-lg py-3 rounded-lg font-semibold ease-in-out delay-150 bg-purple-500 max-md:mt-4  hover:bg-purple-600 duration-300"
+            className="transition flex items-center text-white px-4 justify-center gap-2 text-base py-3 rounded-lg font-semibold ease-in-out delay-150 bg-purple-500 max-md:mt-4 hover:bg-purple-600 duration-300"
           >
-            Create Help Request
+            Create Help post
             <MdKeyboardDoubleArrowRight size={20} />
           </Link>
         </div>
@@ -76,7 +76,7 @@ const Help = () => {
           </button>
         </div>
         {/* Display help Card */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-5 md:my-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-5 md:my-12">
           {helps.map((helpItem) => (
             <HelpCard key={helpItem._id} helpItem={helpItem} />
           ))}

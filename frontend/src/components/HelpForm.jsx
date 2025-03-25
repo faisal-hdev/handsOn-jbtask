@@ -4,6 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import requestAPI from "../utils/requestAPI";
 
 const HelpForm = () => {
   const navigate = useNavigate();
@@ -17,29 +18,16 @@ const HelpForm = () => {
 
   const onSubmit = async (data) => {
     console.log("Form data----->", data);
-    //Data send to the server
+    // Data send to the server
     try {
-      const { eventData } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/help`,
-        data
-      );
+      const { eventData } = await requestAPI.post("/help", data);
       console.log(eventData);
-      toast.success("Help request created Successfully ", {
-        style: {
-          border: "1px solid #713200",
-          padding: "16px",
-          color: "#713200",
-        },
-        iconTheme: {
-          primary: "#713200",
-          secondary: "#FFFAEE",
-        },
-      });
+      toast.success("Help post created Successfully ", {});
+      reset(); // reset form fields
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.message || "Failed to create help post.");
     }
-    reset();
     navigate("/community-helps");
   };
   return (
@@ -93,6 +81,22 @@ const HelpForm = () => {
                   Urgency Level
                 </label>
                 <select
+                  {...register("urgencyLevel", { required: true })}
+                  name="urgencyLevel"
+                  id="urgencyLevel"
+                  className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
+                >
+                  <option value="">Choose a Urgency Level</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Urgent"> Urgent</option>
+                </select>
+              </div>
+              {/* <div className="col-span-full sm:col-span-3">
+                <label className="text-sm md:text-lg text-black font-normal">
+                  Urgency Level
+                </label>
+                <select
                   {...register("category", { required: true })}
                   name="category"
                   id="category"
@@ -103,7 +107,7 @@ const HelpForm = () => {
                   <option value="Arts & Culture">Medium</option>
                   <option value="Environmental">Urgent</option>
                 </select>
-              </div>
+              </div> */}
               <div className="col-span-full sm:col-span-3">
                 <label className="text-sm mb-3 md:text-lg text-black font-normal">
                   Title

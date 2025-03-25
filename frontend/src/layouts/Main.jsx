@@ -1,20 +1,20 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-
 import Footer from "../components/footer";
-
 import { NavbarSimple } from "../components/Navbar";
 
 const Main = () => {
   return (
-    <div className="overflow-hidden scroll-smooth">
-      {/* Navbar */}
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar at the top */}
       <NavbarSimple />
-      {/* Outlet */}
-      <div className="px-5 lg:px-0 w-full lg:max-w-7xl mx-auto">
+
+      {/* Main content (Outlet) */}
+      <main className="flex-grow px-5 lg:px-0 w-full lg:max-w-7xl mx-auto">
         <Outlet />
-      </div>
-      {/* footer */}
+      </main>
+
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   );

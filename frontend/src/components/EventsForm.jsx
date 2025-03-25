@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import axios from "axios";
 import React from "react";
+import requestAPI from "../utils/requestAPI";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -17,32 +17,19 @@ const EventsForm = () => {
 
   const onSubmit = async (data) => {
     console.log("Form data----->", data);
-    //Data send to the server
+    // Data send to the server
     try {
-      const { eventData } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/event`,
-        data
-      );
-      console.log(eventData);
-      toast.success("Event created successfully ", {
-        style: {
-          border: "1px solid #713200",
-          padding: "16px",
-          color: "#713200",
-        },
-        iconTheme: {
-          primary: "#713200",
-          secondary: "#FFFAEE",
-        },
-      });
+      const response = await requestAPI.post("/event", data);
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Event created successfully!");
+        reset(); // reset form fields
+      }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || "Failed to create event.");
     }
-    reset();
     navigate("/discover-events");
   };
-
   return (
     <section className="my-10 md:my-20">
       <div className="flex flex-col mx-auto lg:flex-row mb-8">
@@ -87,18 +74,6 @@ const EventsForm = () => {
                 </option>
                 <option value="">Others</option>
               </select>
-            </div>
-            <div className="col-span-full sm:col-span-3">
-              <label className="text-sm md:text-lg text-black font-normal">
-                Email
-              </label>
-              <input
-                {...register("email", { required: true })}
-                id="email"
-                name="email"
-                type="email"
-                className="block text-black w-full px-4 py-2 md:py-3 bg-white border rounded-lg focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
-              />
             </div>
             <div className="col-span-full sm:col-span-3">
               <label className="text-sm mb-3 md:text-lg text-black font-normal">
@@ -153,24 +128,35 @@ const EventsForm = () => {
                 Maximum Participants
               </label>
               <input
-                {...register("participants", { required: true })}
+                {...register("maxParticipants", { required: true })}
                 type="number"
-                id="participants"
-                name="participants"
+                id="maxParticipants"
+                name="maxParticipants"
                 className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
               />
             </div>
             <div className="col-span-full sm:col-span-3">
-              <label className="text-sm mb-3 md:text-lg text-black font-normal">
+              <label className="text-sm md:text-lg text-black font-normal">
                 Location
               </label>
-              <input
+              <select
                 {...register("location", { required: true })}
-                type="text"
                 id="location"
                 name="location"
                 className="block text-black w-full px-4 py-2 md:py-3 text-black-700 bg-white border rounded-lg    focus:border-purple-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-purple-300"
-              />
+              >
+                <option value="">Select a location</option>
+                <option value="Dhaka">Dhaka</option>
+                <option value="Chittagong">Chittagong</option>
+                <option value="Khulna">Khulna</option>
+                <option value="Rajshahi">Rajshahi</option>
+                <option value="Sylhet">Sylhet</option>
+                <option value="Barisal">Barisal</option>
+                <option value="Rangpur">Rangpur</option>
+                <option value="Mymensingh">Mymensingh</option>
+                <option value="Cox's Bazar">Cox's Bazar</option>
+                <option value="Comilla">Comilla</option>
+              </select>
             </div>
             <div className="col-span-full sm:colspan-3">
               <label className="text-sm md:text-lg text-black font-normal">
